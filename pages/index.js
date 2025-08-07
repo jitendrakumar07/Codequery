@@ -63,6 +63,12 @@ export default function Home() {
             </button>
           </Link>
 
+            <Link href="/Roman">
+              <button className="w-full px-6 py-2 bg-pink-600 text-white rounded hover:bg-pink-700 transition">
+                🔢 Roman Numeral Converter
+              </button>
+            </Link>
+
           <Link href="/toast/ToastNotification">
             <button className="w-full px-6 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
               🔔 Toast 
@@ -82,10 +88,10 @@ export default function Home() {
           </Link>
 
           <Link href="/api/limited" target="_blank" rel="noopener noreferrer">
-      <button className=" w-full px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold  rounded shadow">
-        Access /api/limited
-      </button>
-    </Link>
+            <button className="w-full px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow">
+              Access /api/limited
+            </button>
+          </Link>
         </div>
       </div>
     </div>

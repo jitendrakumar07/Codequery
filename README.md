@@ -1,40 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 💻 Full Stack Developer Assessment – Next.js Project
 
-## Getting Started
+This is a **Next.js** project bootstrapped with `create-next-app`.  
+It includes **solutions to 10 full-stack assessment problems**, covering:
 
-First, run the development server:
+- ✅ Frontend logic  
+- ✅ API integration  
+- ✅ Authentication  
+- ✅ File handling  
+- ✅ Theme support  
+- ✅ State management — **all without third-party UI libraries**
+
+---
+
+## 🚀 Getting Started
+
+Install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open your browser and visit: http://localhost:3000
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## 🧩 Project Features (Assessment Solutions)
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### ✅ 1. Convert Numbers to Roman Numerals
+JavaScript logic to convert numbers from 1–100 into Roman numerals. Handles edge cases like IV, IX, XL, etc.  
+📍 **Located at**: `utils/romanConverter.js`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+### ✅ 2. Pagination using DummyJSON API
+Fetches 10 products per page from: `https://dummyjson.com/products?limit=10&skip=0`  
+Supports Next/Previous navigation with dynamic URL updates  
+📍 **Located at**: `pages/products/index.js`
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### ✅ 3. Debounced Search (OpenLibrary / DummyJSON)
+Search input debounced by 1 second. Live suggestions fetched via API. Results shown in a dropdown.  
+📍 **Located at**: `components/DebouncedSearch.js`
 
-## Learn More
+### ✅ 4. API Rate Limiting (Custom Logic)
+Limits each IP to 10 requests/minute using a custom `Map()` store. Responds with HTTP 429 on exceeding.  
+📍 **Located at**: `pages/api/limited.js`
 
-To learn more about Next.js, take a look at the following resources:
+### ✅ 5. Auth with Role-Based Access (NextAuth.js)
+Sign in/out using NextAuth. Supports roles: admin, user.  
+Protected Pages:  
+- `/admin` → Admin only  
+- `/dashboard` → Admin or User  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+📍 **Located at**:  
+- `pages/api/auth/[...nextauth].js`  
+- `pages/admin.js`, `pages/dashboard.js`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### ✅ 6. Infinite Scroll Product List
+Loads products on scroll (no buttons). Powered by IntersectionObserver.  
+📍 **Located at**: `pages/products/productsInfinite.js`
 
-## Deploy on Vercel
+### ✅ 7. Toast Notification System (No Libraries)
+Supports success, error, and info. Auto-dismiss after 3s + manual close (✕).  
+📍 **Located at**:  
+- `components/ToastContext.js`  
+- `pages/toast/ToastNotification.js`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ✅ 8. Nested Comment Section
+Users can add comments and nested replies. Renders recursively with infinite depth. Mocked in-memory storage.  
+📍 **Located at**: `pages/comment/comments.js`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+### ✅ 9. Light / Dark Theme Toggle
+Switch between dark/light themes. Stored in localStorage. Global CSS-based class toggling.  
+📍 **Located at**:  
+- `components/ThemeToggle.js`  
+- `context/ThemeContext.js`
+
+### ✅ 10. File Upload with Live Preview
+Preview image on file select. Upload to `/public/uploads` via API. No libraries used.  
+📍 **Located at**:  
+- `pages/upload/upload.js`  
+- `pages/api/upload.js`
+
+
+## 🌐 API Routes
+
+| Method | Endpoint        | Description                     |
+|--------|-----------------|---------------------------------|
+| GET    | /api/limited    | Rate-limited endpoint (10/min)  |
+| POST   | /api/upload     | Image upload handler            |
+| GET    | /api/auth/*     | NextAuth.js endpoints           |
+
+---
+
+## 🔐 Auth Protected Pages (RBAC)
+
+| Page        | Role Required |
+|-------------|----------------|
+| /admin      | admin only     |
+| /dashboard  | admin or user  |
+
+---
+
+## 📦 Tech Stack
+
+- Next.js  
+- React  
+- Tailwind CSS (optional)  
+- NextAuth.js  
+- Vanilla JS (no UI libraries)
+
+---
+
+## 📚 Learn More
+
+- [Next.js Docs](https://nextjs.org/docs)
+- [NextAuth Docs](https://next-auth.js.org/)
+- [DummyJSON API](https://dummyjson.com)
+- [Open Library API](https://openlibrary.org/developers/api)
+
+---
+
+## 🚀 Deploy on Vercel
+
+Easiest way to deploy your Next.js app is with [Vercel](https://vercel.com):
+
+```bash
+# Install globally (if needed)
+npm i -g vercel
+
+# Then deploy
+vercel
+```
+
+---
+
+## 📄 License
+
+MIT License © 2025 Jitendra kumar
