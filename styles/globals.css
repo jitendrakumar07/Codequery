@@ -1,26 +1,49 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* styles/globals.css */
+
+* {
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
 }
+
+/* Light theme styles */
+body {
+  background-color: white;
+  color: black;
+  transition: all 0.3s ease;
+}
+
+/* Dark theme styles */
+body.dark {
+  background-color: #121212;
+  color: white;
+}
+
+/* Optional: Add transitions for smooth effect */
+button {
+  transition: background-color 0.3s ease;
+}
+
+/* Other global styles... */
