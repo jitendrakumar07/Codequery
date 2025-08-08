@@ -38,5 +38,5 @@ export default NextAuth({
   pages: {
     signIn: "/signin",
   },
-  secret: process.env.NEXTAUTH_SECRET || "jitendra",
+  secret: process.env.NEXTAUTH_SECRET,
 });
