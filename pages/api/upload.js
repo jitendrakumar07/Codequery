@@ -1,11 +1,10 @@
 // pages/api/upload.js
 import { v2 as cloudinary } from "cloudinary";
 import formidable from "formidable";
-import fs from "fs";
 
 export const config = {
   api: {
-    bodyParser: false, // Disable Next.js default body parser
+    bodyParser: false,
   },
 };
 
@@ -16,33 +15,38 @@ cloudinary.config({
   api_secret: "C8W4vLxBERmtGNGayv2WFPssZxM",
 });
 
+// Formidable parser function
+const parseForm = (req) => {
+  const form = formidable({ multiples: false });
+  return new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) reject(err);
+      else resolve({ fields, files });
+    });
+  });
+};
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    // Parse form-data
-    const form = new formidable.IncomingForm();
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        return res.status(500).json({ error: "Error parsing form data" });
-      }
+    const { files } = await parseForm(req);
+    const file = files.file;
 
-      const file = files.file;
-      if (!file) {
-        return res.status(400).json({ error: "No file uploaded" });
-      }
+    if (!file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
 
-      // Upload to Cloudinary
-      const result = await cloudinary.uploader.upload(file.filepath, {
-        folder: "nextjs_uploads", // optional folder in Cloudinary
-      });
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(file.filepath, {
+      folder: "nextjs_uploads",
+    });
 
-      res.status(200).json({
-        message: "Image uploaded successfully",
-        url: result.secure_url, // Cloudinary hosted image URL
-      });
+    res.status(200).json({
+      message: "Image uploaded successfully",
+      url: result.secure_url,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
