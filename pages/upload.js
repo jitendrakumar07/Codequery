@@ -3,6 +3,7 @@ import { useState } from "react";
 export default function Upload() {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [uploadedUrl, setUploadedUrl] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e) => {
@@ -22,6 +23,7 @@ export default function Upload() {
     if (!image) return alert("Please select an image first");
 
     setLoading(true);
+    setUploadedUrl(null);
 
     const formData = new FormData();
     formData.append("file", image);
@@ -34,8 +36,8 @@ export default function Upload() {
 
       const data = await res.json();
       if (res.ok) {
+        setUploadedUrl(data.url); // Cloudinary ka URL
         alert("Upload successful!");
-        console.log("File saved at:", data.filePath);
         setImage(null);
         setImagePreview(null);
       } else {
@@ -79,6 +81,25 @@ export default function Upload() {
             {loading ? "Uploading..." : "Upload"}
           </button>
         </form>
+
+        {uploadedUrl && (
+          <div className="mt-4 text-center">
+            <p className="text-green-600 font-semibold">Uploaded Successfully!</p>
+            <a
+              href={uploadedUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline break-all"
+            >
+              {uploadedUrl}
+            </a>
+            <img
+              src={uploadedUrl}
+              alt="Uploaded"
+              className="w-full mt-2 rounded shadow"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

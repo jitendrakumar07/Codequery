@@ -15,7 +15,7 @@ export async function getServerSideProps(context) {
   if (!session || session.user?.role !== "admin") {
     return {
       redirect: {
-        destination: "/unauthorized",
+        destination: "/dashboard",
         permanent: false,
       },
     };

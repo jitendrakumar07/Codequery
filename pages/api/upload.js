@@ -1,6 +1,7 @@
 // pages/api/upload.js
+import { v2 as cloudinary } from "cloudinary";
+import formidable from "formidable";
 import fs from "fs";
-import path from "path";
 
 export const config = {
   api: {
@@ -8,57 +9,42 @@ export const config = {
   },
 };
 
-const uploadDir = path.join(process.cwd(), "public/uploads");
+// Cloudinary config
+cloudinary.config({
+  cloud_name: "dxbia1pry",
+  api_key: "359682453899814",
+  api_secret: "C8W4vLxBERmtGNGayv2WFPssZxM",
+});
 
-// Ensure uploads directory exists
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const boundary = req.headers["content-type"]?.split("boundary=")[1];
-  if (!boundary) {
-    return res.status(400).json({ error: "No boundary found in request" });
-  }
+  try {
+    // Parse form-data
+    const form = new formidable.IncomingForm();
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        return res.status(500).json({ error: "Error parsing form data" });
+      }
 
-  let chunks = [];
-  req.on("data", (chunk) => chunks.push(chunk));
+      const file = files.file;
+      if (!file) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
 
-  req.on("end", () => {
-    const buffer = Buffer.concat(chunks);
-    const parts = buffer.toString("binary").split(`--${boundary}`);
+      // Upload to Cloudinary
+      const result = await cloudinary.uploader.upload(file.filepath, {
+        folder: "nextjs_uploads", // optional folder in Cloudinary
+      });
 
-    // Find the file part
-    const filePart = parts.find((part) =>
-      part.includes('Content-Disposition: form-data; name="file"')
-    );
-
-    if (!filePart) {
-      return res.status(400).json({ error: "No file found" });
-    }
-
-    // Extract binary content and remove the trailing boundary markers
-    const fileBinarySection = filePart.split("\r\n\r\n")[1];
-    const fileBinaryClean = fileBinarySection
-      .split("\r\n--")[0]; // Remove trailing boundary
-
-    const fileBuffer = Buffer.from(fileBinaryClean, "binary");
-    const fileName = `uploaded_${Date.now()}.jpg`;
-
-    fs.writeFileSync(path.join(uploadDir, fileName), fileBuffer);
-
-    res.status(200).json({
-      message: "Image uploaded successfully",
-      fileName,
-      filePath: `/uploads/${fileName}`,
+      res.status(200).json({
+        message: "Image uploaded successfully",
+        url: result.secure_url, // Cloudinary hosted image URL
+      });
     });
-  });
-
-  req.on("error", (err) => {
-    res.status(500).json({ error: "Error processing file", details: err.message });
-  });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
