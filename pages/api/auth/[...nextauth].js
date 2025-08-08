@@ -1,4 +1,3 @@
-// ✅ CORRECT for pages/api/auth/[...nextauth].js
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -8,22 +7,23 @@ export default NextAuth({
       name: "Credentials",
       credentials: {
         username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         const users = [
           { id: 1, name: "Admin", username: "admin", password: "admin", role: "admin" },
-          { id: 2, name: "User", username: "user", password: "user", role: "user" }
+          { id: 2, name: "User", username: "user", password: "user", role: "user" },
         ];
 
         const user = users.find(
-          u => u.username === credentials.username && u.password === credentials.password
+          (u) =>
+            u.username === credentials.username &&
+            u.password === credentials.password
         );
 
-        if (user) return user;
-        return null;
-      }
-    })
+        return user || null;
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -33,10 +33,10 @@ export default NextAuth({
     async session({ session, token }) {
       session.user.role = token.role;
       return session;
-    }
+    },
   },
   pages: {
-    signIn: "/signin" // optional custom sign-in page
+    signIn: "/signin",
   },
-  secret: process.env.NEXTAUTH_SECRET || "super-secret"
+  secret: process.env.NEXTAUTH_SECRET || "jitendra",
 });

@@ -55,16 +55,12 @@ export default function SignInPage() {
           </button>
         </form>
 
-        {/* Test Credentials Section */}
+        {/* Test Credentials */}
         <div className="bg-gray-50 border border-gray-200 rounded-md p-4">
           <h3 className="text-md font-semibold text-gray-700 mb-2">🧪 Test Credentials:</h3>
           <ul className="text-sm text-gray-800 space-y-1">
-            <li>
-              <span className="font-medium">Admin:</span> <code>admin</code> / <code>admin</code>
-            </li>
-            <li>
-              <span className="font-medium">User:</span> <code>user</code> / <code>user</code>
-            </li>
+            <li><b>Admin:</b> admin / admin</li>
+            <li><b>User:</b> user / user</li>
           </ul>
         </div>
       </div>
