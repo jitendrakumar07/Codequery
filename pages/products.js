@@ -8,13 +8,13 @@ export default function Products({ products, total, currentPage }) {
   const [searchResults, setSearchResults] = useState([]);
   const debounceTimeout = useRef(null);
 
-  // Pagination
+  // Go to specific page
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     router.push(`/products?page=${page}`);
   };
 
-  // Debounced Search Logic
+  // Debounced search
   useEffect(() => {
     if (!searchTerm) {
       setSearchResults([]);
@@ -27,7 +27,7 @@ export default function Products({ products, total, currentPage }) {
       const res = await fetch(`https://dummyjson.com/products/search?q=${searchTerm}`);
       const data = await res.json();
       setSearchResults(data.products);
-    }, 1000); // 1 second debounce
+    }, 800); // debounce 0.8s
   }, [searchTerm]);
 
   const activeProducts = searchTerm ? searchResults : products;
@@ -39,35 +39,29 @@ export default function Products({ products, total, currentPage }) {
           🛍️ Stylish Product Listings
         </h1>
 
-   {/* Premium Search Input */}
-<div className="mb-10 flex justify-center px-4">
-  <div className="relative w-full max-w-xl">
-    <input
-      type="text"
-      placeholder="Search for products, brands, categories..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="w-full pl-12 pr-12 py-3 text-sm sm:text-base rounded-full border border-gray-300 bg-white shadow-md focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300 placeholder-gray-400"
-    />
-
-    {/* Search Icon */}
-    <div className="absolute inset-y-0 left-4 flex items-center text-gray-400 pointer-events-none text-lg">
-      🔍
-    </div>
-
-    {/* Optional Clear Button */}
-    {searchTerm && (
-      <button
-        onClick={() => setSearchTerm('')}
-        className="absolute inset-y-0 right-4 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none text-sm"
-      >
-        ✕
-      </button>
-    )}
-  </div>
-</div>
-
-
+        {/* Search */}
+        <div className="mb-10 flex justify-center px-4">
+          <div className="relative w-full max-w-xl">
+            <input
+              type="text"
+              placeholder="Search for products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-12 pr-12 py-3 text-sm sm:text-base rounded-full border border-gray-300 bg-white shadow-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+            <div className="absolute inset-y-0 left-4 flex items-center text-gray-400 pointer-events-none text-lg">
+              🔍
+            </div>
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className="absolute inset-y-0 right-4 flex items-center text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
@@ -82,7 +76,6 @@ export default function Products({ products, total, currentPage }) {
                 key={product.id}
                 className="bg-white rounded-xl shadow hover:shadow-md transition overflow-hidden relative flex flex-col"
               >
-                {/* Discount Badge */}
                 <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
                   -{Math.round(product.discountPercentage)}%
                 </div>
@@ -110,7 +103,6 @@ export default function Products({ products, total, currentPage }) {
                     Category: {product.category}
                   </div>
 
-                  {/* Price & Rating */}
                   <div className="mt-auto">
                     <div className="flex justify-between items-center mb-2">
                       <div className="text-sm">
@@ -125,7 +117,6 @@ export default function Products({ products, total, currentPage }) {
                         ⭐ {product.rating}
                       </div>
                     </div>
-
                     <button className="w-full bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded hover:bg-blue-700 transition">
                       🛒 Add to Cart
                     </button>
@@ -165,7 +156,7 @@ export default function Products({ products, total, currentPage }) {
   );
 }
 
-// Server-side fetching for paginated results
+// Server-side data fetch
 export async function getServerSideProps(context) {
   const page = parseInt(context.query.page) || 1;
   const limit = 10;

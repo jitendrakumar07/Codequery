@@ -45,13 +45,13 @@ export default function Home() {
 
         {/* Navigation Links Grid */}
         <div className="grid grid-cols-1 gap-4 w-full">
-          <Link href="/products/products">
+          <Link href="/products">
             <button className="w-full px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
               🛍️ View Products
             </button>
           </Link>
 
-          <Link href="/products/productsInfinite">
+          <Link href="/productsInfinite">
             <button className="w-full px-6 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition">
               ♻️ View Infinite Scroll Products
             </button>
